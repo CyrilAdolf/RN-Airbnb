@@ -19,7 +19,7 @@ import axios from "axios";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-export default function AroundMeScreen() {
+export default function AroundMeScreen({ navigation }) {
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isLoading, setIsLoading] = useState(true);

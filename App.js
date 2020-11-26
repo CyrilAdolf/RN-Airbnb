@@ -74,7 +74,7 @@ export default function App() {
             name="Tab"
             options={{ header: () => null, animationEnabled: false }}
           >
-            {() => (
+            {(props) => (
               <Tab.Navigator
                 tabBarOptions={{
                   activeTintColor: "tomato",
@@ -142,7 +142,7 @@ export default function App() {
                           tabBarLabel: "Around me",
                         }}
                       >
-                        {() => <AroundMeScreen />}
+                        {() => <AroundMeScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
