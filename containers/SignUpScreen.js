@@ -56,7 +56,7 @@ export default function SignUpScreen({ setToken }) {
         // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
         // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
       } catch (error) {
-        console.log("msg :", error.message);
+        console.log("msg :", error.response);
       }
     } else {
       Alert.alert(

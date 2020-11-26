@@ -16,6 +16,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 // IMPORT AXIOS
 const axios = require("axios");
 
+// export default function SignInScreen(props) {
+//   console.log("props setting: ", props); //  Obj: setToken
 export default function SignInScreen({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,11 +37,7 @@ export default function SignInScreen({ setToken }) {
           }
         );
         console.log("1", response.data);
-        // GET TOKEN AN UPDATE IT
-        // GET TOKEN AN UPDATE IT
         setToken(response.data.token);
-        // GET TOKEN AN UPDATE IT
-        // GET TOKEN AN UPDATE IT
       } catch (error) {
         console.log("error : ", error.response.data);
       }
@@ -82,7 +80,8 @@ export default function SignInScreen({ setToken }) {
           <Text>Password: </Text>
           <TextInput
             placeholder="Password"
-            secureTextEntry={true}
+            // secureTextEntry={true}
+            // EASIER FOR TESTS
             onChangeText={(text) => {
               setPassword(text);
             }}

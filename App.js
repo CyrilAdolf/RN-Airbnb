@@ -4,11 +4,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+// Containers
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import RoomScreen from "./containers/RoomScreen";
+import AroundMeScreen from "./containers/AroundMeScreen";
+// Components
+import Logo from "./Components/logo";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,20 +54,20 @@ export default function App() {
     <NavigationContainer>
       {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
-        // No token found, user isn't signed in
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"
             options={{ header: () => null, animationEnabled: false }}
           >
-            {() => <SignInScreen setToken={setToken} />}
+            {(props) => <SignInScreen {...props} setToken={setToken} />}
+            {/* setToken IS NOT PASS THROUGH PARAMS KEY (IN ROUTE) BUT IN A THIRD OBJ IN PROPS , ALSO EXPLAIN WHY WE DESCRUTURE IT */}
+            {/* setToken IS NOT PASS THROUGH PARAMS KEY (IN ROUTE) BUT IN A THIRD OBJ IN PROPS , ALSO EXPLAIN WHY WE DESCRUTURE IT */}
           </Stack.Screen>
           <Stack.Screen name="SignUp">
             {() => <SignUpScreen setToken={setToken} />}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
-        // User is signed in
         // User is signed in
         <Stack.Navigator>
           <Stack.Screen
@@ -75,6 +81,9 @@ export default function App() {
                   inactiveTintColor: "gray",
                 }}
               >
+                {/* TAB HOME*/}
+                {/* TAB HOME*/}
+
                 <Tab.Screen
                   name="Home"
                   options={{
@@ -89,15 +98,18 @@ export default function App() {
                       <Stack.Screen
                         name="Home"
                         options={{
-                          title: "My App",
+                          // Logo
+                          headerTitle: (props) => <Logo {...props} />,
+                          // Logo
                           headerStyle: { backgroundColor: "salmon" },
                           headerTitleStyle: { color: "white" },
                         }}
                       >
                         {() => <HomeScreen />}
                       </Stack.Screen>
-
-                      <Stack.Screen name="Room">{() => <Room />}</Stack.Screen>
+                      <Stack.Screen name="Room">
+                        {(props) => <RoomScreen {...props} />}
+                      </Stack.Screen>
 
                       <Stack.Screen
                         name="Profile"
@@ -110,6 +122,34 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+                {/* TAB AROUND ME */}
+                {/* TAB AROUND ME */}
+                <Tab.Screen
+                  name="AroundMe"
+                  options={{
+                    tabBarLabel: "Around me",
+                    tabBarIcon: ({ color, size }) => (
+                      <Entypo name="location" size={24} color="black" />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="AroundMe"
+                        options={{
+                          title: "AroundMe",
+                          tabBarLabel: "Around me",
+                        }}
+                      >
+                        {() => <AroundMeScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
+                {/* TAB SETTINGS */}
+                {/* TAB SETTINGS */}
                 <Tab.Screen
                   name="Settings"
                   options={{

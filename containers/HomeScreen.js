@@ -8,11 +8,11 @@ import {
   FlatList,
   StyleSheet,
   Image,
-  ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
-import { ActivityIndicator } from "react-native";
+// import { ActivityIndicator } from "react-native";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -38,7 +38,7 @@ export default function HomeScreen() {
   ) : (
     <SafeAreaView>
       {/* <ScrollView> */}
-      <View>{/* LOGO */}</View>
+      {/* FlatList COMPONENT ALREADY CONTAIN A SCROLLVIEW */}
 
       <FlatList
         data={rooms}
@@ -48,7 +48,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={styles.annonce}
               onPress={() => {
-                navigation.navigate("Room");
+                navigation.navigate("Room", { id: item._id });
               }}
             >
               <Image
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   photos: {
-    // width: 250,
+    width: "100%",
     height: 250,
   },
   avatar: {
