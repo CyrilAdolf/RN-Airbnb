@@ -11,9 +11,11 @@ import {
   Image,
   Alert,
 } from "react-native";
+
+// PREVENT KEYBOARD TO DISTURB THE FORM
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-// IMPORT AXIOS
+// REQUEST
 const axios = require("axios");
 
 // export default function SignInScreen(props) {
@@ -22,7 +24,9 @@ export default function SignInScreen({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // AXIOS REQUEST
+  // POSSIBLE TO ACCESS IT WITHOUT useNavigation THROUGH PROPS
+  const navigation = useNavigation();
+
   // AXIOS REQUEST
   const handleSubmit = async () => {
     if (email !== "" || password !== "") {
@@ -36,8 +40,10 @@ export default function SignInScreen({ setToken }) {
             },
           }
         );
-        console.log("1", response.data);
-        setToken(response.data.token);
+        console.log("data ===> :", response.data);
+        console.log("id ===> :", response.data.id);
+        console.log("token ===> :", response.data.token);
+        setToken(response.data.token, response.data.id);
       } catch (error) {
         console.log("error : ", error.response.data);
       }
@@ -58,8 +64,6 @@ export default function SignInScreen({ setToken }) {
     }
   };
 
-  const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
@@ -69,6 +73,7 @@ export default function SignInScreen({ setToken }) {
             <Image source={require("../assets/logo.png")} style={styles.img} />
             <Text style={{ fontSize: 30 }}>Sign In</Text>
           </View>
+          {/*  */}
           <Text>Name: </Text>
           <TextInput
             placeholder="Email"
@@ -92,10 +97,6 @@ export default function SignInScreen({ setToken }) {
             title="Sign in"
             onPress={() => {
               handleSubmit();
-              //
-              // Move this in handleSubmit:
-              // const userToken = "secret-token";
-              // setToken(userToken);
             }}
           >
             <Text>Sign in</Text>

@@ -3,11 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-  FlatList,
-  ScrollView,
   Dimensions,
   ActivityIndicator,
 } from "react-native";
@@ -19,61 +14,65 @@ import axios from "axios";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-export default function AroundMeScreen({ navigation }) {
+export default function AroundMeScreen({ navigation, route }) {
+  // console.log(route);
+  //  STATES
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoading2, setIsLoading2] = useState(true);
   const [markers, setMarkers] = useState();
-  //   console.log("location : ", location);
 
-  // REQUEST POUR OBTENIR LA GEOLOC DE L'UTILISATEUR
+  // REQUEST TO ASK FOR LOCALISATION AUTHORIZATION
   useEffect(() => {
-    (async () => {
+    const authorizationLoc = async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
       }
-      //   DEFINE "ELSE" WAY
       let location = await Location.getCurrentPositionAsync({});
       const obj = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
 
-      //   NOT NEEDED TO SET MY POSITION ON THE MAP
-      // NEEDED TO CENTER THE MAP AND FOR THE NEXT REQUEST
+      // INFO NOT NEEDED TO SET MY POSITION ON THE MAP
+      // BUT NEEDED TO CENTER THE MAP AND FOR THE NEXT REQUEST
+
       setLocation(obj);
       setIsLoading(false);
-    })();
+    };
+    authorizationLoc();
   }, []);
 
-  // REQUEST TO ACCESS MARKER COORDINATES
+  // REQUEST TO ACCESS MARKER COORDINATES **AND ID**
   useEffect(() => {
     if (location) {
       const fetchData = async () => {
-        let query = `?latitude=${location.latitude}&longitude=${location.longitude}`;
-
-        const response = await axios.get(
-          `https://express-airbnb-api.herokuapp.com/rooms/around${query}`
-        );
-        let table = [];
-        response.data.map((item, i) => {
-          return table.push(item.location);
-        });
-        setMarkers(table);
-        setIsLoading2(false);
+        try {
+          const response = await axios.get(
+            `https://express-airbnb-api.herokuapp.com/rooms/around?latitude=${location.latitude}&longitude=${location.longitude}`
+          );
+          let table = [];
+          response.data.map((item, i) => {
+            return table.push(item);
+          });
+          setMarkers(table);
+          setIsLoading2(false);
+        } catch (error) {
+          console.log(error.message);
+        }
       };
       fetchData();
     }
   }, [location]);
+
   return isLoading ? (
     <ActivityIndicator />
   ) : isLoading2 ? (
     <ActivityIndicator />
   ) : (
     <View style={styles.container}>
-      <Text>This is the AroundMeScreen component</Text>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -84,26 +83,20 @@ export default function AroundMeScreen({ navigation }) {
         }}
         showsUserLocation={true}
       >
-        {/* MARKERS STAND HERE */}
-        {/* MARKERS STAND HERE */}
         {markers.map((marker, i) => {
           return (
             <MapView.Marker
               coordinate={{
-                latitude: marker[1],
-                longitude: marker[0],
+                latitude: marker.location[1],
+                longitude: marker.location[0],
               }}
-              key={marker[0]}
+              key={marker._id}
               onPress={() => {
-                console.log("OK");
-                navigation.navigate("Room");
+                navigation.navigate("Room", { id: marker._id });
               }}
             />
           );
-          //   console.log(marker);
         })}
-        {/* MARKERS STAND HERE */}
-        {/* MARKERS STAND HERE */}
       </MapView>
     </View>
   );

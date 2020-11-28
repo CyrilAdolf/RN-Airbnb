@@ -1,13 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+
+// REQUEST NEEDED
 import axios from "axios";
-import { ActivityIndicator } from "react-native";
+
+// DISPLAY MAP
 import MapView from "react-native-maps";
 
-export default function Room(props) {
+export default function Room({ route }) {
+  // STATES
   const [isLoading, setIsLoading] = useState(true);
   const [room, setRoom] = useState();
-  const id = props.route.params.id;
+
+  // EXTRACT ID FROM PARAMS
+  const id = route.params.id;
+
+  // FETCHDATA
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -28,6 +43,7 @@ export default function Room(props) {
   ) : (
     <View style={styles.container}>
       {/* IMPLEMENT PACKAGE FOR PICTURES */}
+      {/* IMPLEMENT PACKAGE FOR PICTURES */}
       <FlatList
         data={room.photos}
         renderItem={({ item }) => {
@@ -43,12 +59,7 @@ export default function Room(props) {
         horizontal={true}
         style={styles.flatList}
       />
-
-      {/* LIMITER A 3 LIGNES */}
-      {/* LIMITER A 3 LIGNES */}
-      <Text>{room.description}</Text>
-      {/* DISPLAY MAP HERE */}
-      {/* DISPLAY MAP HERE */}
+      <Text numberOfLines={3}>{room.description}</Text>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -73,9 +84,9 @@ export default function Room(props) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
   },
   photos: {
     height: 250,
@@ -84,10 +95,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   flatList: {
-    // borderColor: "black",
-    // borderWidth: 2,
-    // height: 250,
-    marginBottom: 20,
+    height: 200,
+    marginTop: 30,
   },
   map: {
     // flex: 1,

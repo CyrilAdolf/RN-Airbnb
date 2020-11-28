@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Button,
   Text,
   TextInput,
   View,
@@ -10,9 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-// IMPORT AXIOS
-const axios = require("axios");
+import axios from "axios";
 
 export default function SignUpScreen({ setToken }) {
   //
@@ -33,7 +30,6 @@ export default function SignUpScreen({ setToken }) {
       password2 === password
     ) {
       // REQUEST
-      console.log("envoi de la requete");
       try {
         const response = await axios.post(
           "https://express-airbnb-api.herokuapp.com/user/sign_up",
@@ -49,12 +45,11 @@ export default function SignUpScreen({ setToken }) {
             },
           }
         );
-        console.log(response.data);
-        // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
-        // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
-        setToken(response.data.token);
-        // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
-        // PROBABLY UPDATE TOKEN HERE, DEPNEDING ON THE RESPONSE.DATA
+        console.log("data ===> :", response.data);
+        console.log("id ===> :", response.data.id);
+        console.log("token ===> :", response.data.token);
+
+        setToken(response.data.token, response.data._id);
       } catch (error) {
         console.log("msg :", error.response);
       }
@@ -109,7 +104,6 @@ export default function SignUpScreen({ setToken }) {
               setDescription(text);
             }}
             style={styles.textArea}
-            // MODIFY TO ADD LINES AND BORDER
           />
           <TextInput
             placeholder="Password"
@@ -129,8 +123,6 @@ export default function SignUpScreen({ setToken }) {
           <TouchableOpacity
             onPress={async () => {
               handleSubmit();
-              // const userToken = "secret-token";
-              // setToken(userToken);
             }}
             style={styles.button}
           >

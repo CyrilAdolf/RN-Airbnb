@@ -12,7 +12,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
-// import { ActivityIndicator } from "react-native";
+
+import Stars from "../Components/Stars";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -37,7 +38,6 @@ export default function HomeScreen() {
     <ActivityIndicator />
   ) : (
     <SafeAreaView>
-      {/* <ScrollView> */}
       {/* FlatList COMPONENT ALREADY CONTAIN A SCROLLVIEW */}
 
       <FlatList
@@ -64,8 +64,9 @@ export default function HomeScreen() {
               >
                 <View>
                   <Text>{item.title}</Text>
-                  <Text>{item.ratingValue} Star(s)</Text>
-                  {/* AJOUTER CONDITION POUR AFFICHER DES ICONES EN FONCTION DE LA NOTE */}
+                  <View>
+                    <Stars item={item} />
+                  </View>
                 </View>
                 <View>
                   <Image
@@ -87,7 +88,6 @@ export default function HomeScreen() {
           navigation.navigate("Profile", { userId: 123 });
         }}
       />
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -95,8 +95,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   annonce: {
     justifyContent: "center",
-    borderColor: "green",
-    borderWidth: 2,
+    // borderWidth: 2,
+    marginBottom: 20,
+    paddingHorizontal: 20,
   },
   photos: {
     width: "100%",
